@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunlands.library.mapper.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.sunlands.library.domain.Permission" >
+    <id column="permission_id" property="permissionId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="color" property="color" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="TINYINT" />
+    <collection property="children" column="permission_id" select="com.sunlands.library.mapper.PermissionMapper.getChildrenByParentId"></collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    permission_id, name, pid, parent_name, type, url, code, color, icon, sort
+  </sql>
+
+  <select id="getPermissionListByRoleId" resultType="Permission" parameterType="Integer">
+      SELECT
+			p.permission_id as permissionId,
+			p.name,
+			p.url,
+			p.sort,
+			p.type,
+			p.pid,
+			p.code,
+			p.color,
+			p.icon,
+			p.parent_name as parentName
+		FROM
+			sys_permission p
+		INNER JOIN
+			sys_role_permission rp ON p.permission_id = rp.permission_id
+		WHERE
+			rp.role_id = #{roleId}
+		ORDER BY
+			p.pid ASC,p.sort ASC;
+
+  </select>
+
+  <!--因为在resultMap里添加了select查询操作，所以用resultMap作为返回参数的时候会自动对collection自动进行查询操作，
+      但为什么会调用两次？
+      因为创建对象的时候会默认调用一次resultMap？
+  -->
+  <select id="getByPage" resultType="Permission">
+    SELECT
+			p.permission_id as permissionId,
+			p.name,
+			p.url,
+			p.sort,
+			p.type,
+			p.pid,
+			p.code,
+			p.color,
+			p.icon,
+			p.parent_name as parentName
+		FROM
+			sys_permission p
+  </select>
+  <select id="getPermissionList" parameterType="Integer" resultType="Permission">
+		SELECT
+			p.permission_id as permissionId,
+			p.name,
+			p.url,
+			p.sort,
+			p.type,
+			p.pid,
+			p.code,
+			p.color,
+			p.icon,
+			p.parent_name as parentName
+		FROM
+			sys_permission p
+		INNER JOIN
+			sys_role_permission rp ON p.permission_id = rp.permission_id
+		INNER JOIN
+			sys_user_role ur ON rp.role_id = ur.role_id
+		WHERE
+			ur.user_id = #{userId}
+		ORDER BY
+			p.pid ASC,p.sort ASC;
+	</select>
+
+  <select id="getChildrenByParentId" parameterType="Integer" resultType="Permission">
+		SELECT
+			p.permission_id as permissionId,
+			p.name,
+			p.url,
+			p.sort,
+			p.type,
+			p.pid,
+			p.code,
+			p.color,
+			p.icon,
+			p.parent_name as parentName
+		FROM
+			sys_permission p
+		WHERE
+			p.pid = #{id}
+	</select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sunlands.library.domain.Permission" >
+    insert into sys_permission (permission_id, name, pid, 
+      parent_name, type, url, 
+      code, color, icon, 
+      sort)
+    values (#{permissionId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, 
+      #{parentName,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{url,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunlands.library.domain.Permission" >
+    insert into sys_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        permission_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="parentName != null" >
+        parent_name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="color != null" >
+        color,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null" >
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sunlands.library.domain.Permission" >
+    update sys_permission
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null" >
+        parent_name = #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=TINYINT},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sunlands.library.domain.Permission" >
+    update sys_permission
+    set name = #{name,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      parent_name = #{parentName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      url = #{url,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=TINYINT}
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+</mapper>

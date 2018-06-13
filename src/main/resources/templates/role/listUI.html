@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>角色列表</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../js/layer/skin/default/layer.css" />
+    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css" />
+    <link rel="stylesheet" href="../js/zTree/css/zTreeStyle/metro.css" />
+</head>
+<body>
+<div style="margin-left: auto;margin-right: auto;width: 95%">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div style="position: absolute;top:15px" id="btns">
+
+                            <a shiro:hasPermission="role:setPermission" href="#" class="btn btn-success  btn-sm" data-code="role:setPermission">
+                                <i class="icon-cog"></i>设置权限
+                            </a>
+                            <a shiro:hasPermission="role:add" href="#" class="btn btn-primary  btn-sm" data-code="role:add">
+                                <i class="icon-ok"></i>新增
+                            </a>
+                            <a shiro:hasPermission="role:update" href="#" class="btn btn-warning btn-sm" data-code="role:update">
+                                <i class="icon-edit"></i>编辑
+                            </a>
+                            <a shiro:hasPermission="role:delete" href="#" class="btn btn-danger btn-sm" data-code="role:delete">
+                                <i class="icon-trash"></i>删除
+                            </a>
+                    </div>
+                    <table id="table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="permissionUI" class="col-xs-12 col-sm-12" style="display: none">
+        <label for="form-field-select-2">选择权限</label>
+        <ul id="permissionTree" class="ztree" style="width:100%; overflow:hidden;"></ul>
+    </div>
+</div>
+<head th:include="commom2"/>
+<script src="../js/zTree/js/jquery.ztree.all-3.5.min.js"></script>
+<script src="../js/role/list.js?ver=0.1"></script>
+</body>
+</html>

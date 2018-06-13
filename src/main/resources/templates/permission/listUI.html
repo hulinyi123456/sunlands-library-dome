@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>权限列表</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../js/layer/skin/default/layer.css" />
+    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css" />
+    <link rel="stylesheet" href="../js/bootstrap-table/tree-column/bootstrap-table-tree-column.css" />
+
+</head>
+<body>
+<div style="margin-left: auto;margin-right: auto;width: 95%">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div style="position: absolute;top:15px" id="btns">
+
+                            <a shiro:hasPermission="permission:add" href="#" class="btn btn-primary  btn-sm" data-code="permission:add">
+                                <i class="icon-ok"></i>新增
+                            </a>
+
+                            <a shiro:hasPermission="permission:update" href="#" class="btn btn-warning btn-sm" data-code="permission:update">
+                                <i class="icon-edit"></i>编辑
+                            </a>
+
+                            <a shiro:hasPermission="permission:delete" href="#" class="btn btn-danger btn-sm" data-code="permission:delete">
+                                <i class="icon-trash"></i>删除
+                            </a>
+
+                    </div>
+                    <table id="table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<head th:include="commom2"/>
+<script src="../js/bootstrap-table/tree-column/bootstrap-table-tree-column.min.js"></script>
+<script src="../js/permission/list.js"></script>
+</body>
+</html>

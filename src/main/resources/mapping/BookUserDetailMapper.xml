@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunlands.library.mapper.BookUserDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.sunlands.library.domain.BookUserDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="book_id" property="bookId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="admin_id" property="adminId" jdbcType="INTEGER" />
+    <result column="admin2_id" property="admin2Id" jdbcType="INTEGER" />
+    <result column="borrow_time" property="borrowTime" jdbcType="TIMESTAMP" />
+    <result column="back_time" property="backTime" jdbcType="TIMESTAMP" />
+    <result column="renewal" property="renewal" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, book_id, user_id, admin_id, admin2_id, borrow_time, back_time, renewal, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from book_user_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from book_user_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sunlands.library.domain.BookUserDetail" >
+    insert into book_user_detail (id, book_id, user_id, 
+      admin_id, admin2_id, borrow_time, 
+      back_time, renewal, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{adminId,jdbcType=INTEGER}, #{admin2Id,jdbcType=INTEGER}, #{borrowTime,jdbcType=TIMESTAMP}, 
+      #{backTime,jdbcType=TIMESTAMP}, #{renewal,jdbcType=CHAR}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunlands.library.domain.BookUserDetail" >
+    insert into book_user_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bookId != null" >
+        book_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+      <if test="admin2Id != null" >
+        admin2_id,
+      </if>
+      <if test="borrowTime != null" >
+        borrow_time,
+      </if>
+      <if test="backTime != null" >
+        back_time,
+      </if>
+      <if test="renewal != null" >
+        renewal,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null" >
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="admin2Id != null" >
+        #{admin2Id,jdbcType=INTEGER},
+      </if>
+      <if test="borrowTime != null" >
+        #{borrowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backTime != null" >
+        #{backTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="renewal != null" >
+        #{renewal,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sunlands.library.domain.BookUserDetail" >
+    update book_user_detail
+    <set >
+      <if test="bookId != null" >
+        book_id = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="admin2Id != null" >
+        admin2_id = #{admin2Id,jdbcType=INTEGER},
+      </if>
+      <if test="borrowTime != null" >
+        borrow_time = #{borrowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backTime != null" >
+        back_time = #{backTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="renewal != null" >
+        renewal = #{renewal,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sunlands.library.domain.BookUserDetail" >
+    update book_user_detail
+    set book_id = #{bookId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      admin_id = #{adminId,jdbcType=INTEGER},
+      admin2_id = #{admin2Id,jdbcType=INTEGER},
+      borrow_time = #{borrowTime,jdbcType=TIMESTAMP},
+      back_time = #{backTime,jdbcType=TIMESTAMP},
+      renewal = #{renewal,jdbcType=CHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
