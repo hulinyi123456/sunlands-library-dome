@@ -75,4 +75,9 @@ public class UserController {
 		return "/user/listUI";
 	}
 
+	@RequestMapping("getList")
+	@ResponseBody
+	public Result getList(){
+		return Result.succeed(this.userService.getAllUser());
+	}
 }

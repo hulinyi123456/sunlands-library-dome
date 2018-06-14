@@ -73,4 +73,9 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         this.userMapper.insertSelective(user);
     }
+
+    @Override
+    public List<User> getAllUser() {
+        return userMapper.getByPage();
+    }
 }
