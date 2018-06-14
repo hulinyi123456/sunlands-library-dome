@@ -25,7 +25,7 @@ $(function() {
                         return '<span class="label label-warning">延期</span>';
                     }
                     if (value === 3) {
-                        return '<span class="label label-warning">超时</span>';
+                        return '<span class="label label-danger">超时</span>';
                     }
                 }
                 },
@@ -132,7 +132,7 @@ $(function() {
 	
 	// 新增方法
 	var addData = function() {
-		window.location.href = "/role/saveUI";
+		window.location.href = "/book/saveUI";
 	}
 	
 	// 修改方法
@@ -152,7 +152,7 @@ $(function() {
 			});
             return;
         }
-		window.location.href = "/role/saveUI?id="+list[0]["id"];
+		window.location.href = "/book/saveUI?bId="+list[0]["bId"];
 	}
 
 	// 删除方法
@@ -230,11 +230,11 @@ $(function() {
 	btns.each(function(index, domEle) {
 		var btn = $(domEle);
 		var code = btn.data("code");
-		if (code == "role:setPermission") {
-			btn.on("click", setPermission);
-		} else if (code == "role:add") {
+		if (code == "book:borrow") {
+			btn.on("click", borrow);
+		} else if (code == "book:add") {
 			btn.on("click", addData);
-		} else if(code == "role:update"){
+		} else if(code == "book:update"){
 			btn.on("click", updateData);
 		}else if (code == "role:delete") {
 			btn.on("click", deleteData);

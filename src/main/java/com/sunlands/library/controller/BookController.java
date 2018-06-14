@@ -2,13 +2,18 @@ package com.sunlands.library.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.sunlands.library.domain.BookInfo;
+import com.sunlands.library.domain.BookType;
 import com.sunlands.library.service.BookService;
+import com.sunlands.library.service.BookTypeService;
 import com.sunlands.library.util.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * @author : hulin
@@ -21,6 +26,8 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+    @Autowired
+    private BookTypeService bookTypeService;
 
     /**
      *
@@ -52,5 +59,27 @@ public class BookController {
     public Result list(int offset, int limit, String search) {
         PageInfo<BookInfo> pageInfo = this.bookService.getBookListByPage(offset / limit + 1, limit, search);
         return Result.succeed(pageInfo);
+    }
+
+    @RequestMapping("saveUI")
+    public String saveUI(Model model,Integer bId){
+        if (bId!=null){
+            BookInfo bookInfo = this.bookService.getBookById(bId);
+            model.addAttribute("book",bookInfo);
+        }
+        List<BookType> bookTypes = this.bookTypeService.getAllType();
+        model.addAttribute("bookTypes",bookTypes);
+        return "book/saveUI";
+    }
+
+    @RequiresPermissions(value={"book:add"})
+    @RequestMapping("save")
+    public String save(BookInfo book){
+        if(book.getbId()!=null){
+            this.bookService.update(book);
+        }else {
+            this.bookService.save(book);
+        }
+        return "redirect:/book/listUI";
     }
 }

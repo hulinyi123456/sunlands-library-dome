@@ -8,6 +8,11 @@
   <sql id="Base_Column_List" >
     type_id, name
   </sql>
+  <select id="getAllType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from book_type
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

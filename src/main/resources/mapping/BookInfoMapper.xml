@@ -52,7 +52,7 @@
       <if test="author != null" >
         author,
       </if>
-      <if test="public != null" >
+      <if test="press != null" >
         public,
       </if>
       <if test="status != null" >
@@ -72,8 +72,8 @@
       <if test="author != null" >
         #{author,jdbcType=CHAR},
       </if>
-      <if test="public != null" >
-        #{public,jdbcType=VARCHAR},
+      <if test="press != null" >
+        #{press,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
@@ -92,8 +92,8 @@
       <if test="author != null" >
         author = #{author,jdbcType=CHAR},
       </if>
-      <if test="public != null" >
-        public = #{public,jdbcType=VARCHAR},
+      <if test="press != null" >
+        public = #{press,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
