@@ -8,7 +8,7 @@
     <result column="author" property="author" jdbcType="CHAR" />
     <result column="public" property="press" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
-    <association property="currentDetail" column="b_id" select="com.sunlands.library.mapper.BookUserDetailMapper.getCurrentDetailById"></association>
+    <association property="currentDetail" column="b_id" select="com.sunlands.library.mapper.BookUserDetailMapper.getCurrentDetailByBookId"></association>
   </resultMap>
   <sql id="Base_Column_List" >
     b_id, name, type_id, author, public, status

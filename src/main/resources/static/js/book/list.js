@@ -16,10 +16,10 @@ $(function() {
             {field: 'status',align: 'center', title: '借阅状态',width:220,
                 formatter:function (value) {
                     if (value === 0) {
-                        return '<span class="label label-primary">可借</span>';
+                        return '<span class="label label-success">可借</span>';
                     }
                     if (value === 1) {
-                        return '<span class="label label-success">借出</span>';
+                        return '<span class="label label-primary">借出</span>';
                     }
                     if (value === 2) {
                         return '<span class="label label-warning">延期</span>';
@@ -58,56 +58,63 @@ $(function() {
     });
 
 	var ztreeObj = null;
-	// 设置权限方法
-	var setPermission = function() {
+	// 图书借阅方法
+	var borrow = function() {
 		var list = tableObj.bootstrapTable("getSelections");
 
         if (list.length ==0) {
-            layer.msg("请选择一条记录进行编辑",{
+            layer.msg("请选择一本图书借阅",{
 				offset : 't',
 				anim : 6
 			});
             return;
         }
         if (list.length > 1) {
-             layer.msg("一次只能编辑一条记录",{
+             layer.msg("一次只能借阅一本图书",{
 				offset : 't',
 				anim : 6
 			});
             return;
         }
+        if (list[0].status != 0) {
+            layer.msg("图书已借出",{
+                offset : 't',
+                anim : 6
+            });
+            return;
+        }
         $.ajax({
 			"type" : "GET",
-			"url" : "/permission/getPermissionListWithChecked/"+list[0].roleId,
+			"url" : "/user/getList/",
 			"dataType" : "json",
 			"success" : function(resp) {
-				if (resp.code == 200) {
-					// 生成树
-					ztreeObj = $.fn.zTree.init($("#permissionTree"), getZTreeSetting(), resp.obj);
+                if (resp.code == 200) {
+                    var userList = resp.obj;
+                    $('#userId').empty();
+                    var html = [];
+                    for(var i=0; i<userList.length; i++) {
+                        var obj = userList[i];
+                        html.push("<option value="+obj.userId+" selected='selected'>"+obj.userName+"</option>");
+                    }
+                    $('#userId').html(html.join(""));
 
 					layer.open({
-			          title: "【"+list[0].name+'】关联权限',
+			          title: "《"+list[0].name+'》借阅',
 			    	  type: 1,
-			    	  content: $("#permissionUI"),
-			    	  area: ['400px', '350px'],
-			    	  btn: ['保存', '取消'],
+			    	  content: $("#bookUI"),
+			    	  area: ['400px', '200px'],
+			    	  btn: ['确定', '取消'],
 			    	  yes: function(index, layero){
-			    		  var nodes = ztreeObj.getCheckedNodes(true);
-			              var permissionIds = [];
-			              if (nodes.length > 0) {
-			                  for (var i = 0; i < nodes.length; i++) {
-			                	  permissionIds.push(nodes[i].permissionId);
-			                  }
-			              }
+                          var id = $("#userId").val();
 			        	    // 发送请求
 			        	    $.ajax({
 			    				"type" : "POST",
-			    				"url" : "/role/setPermission",
-			    				"data":{roleId:list[0].roleId,permissionIds:permissionIds.join(",")},
+			    				"url" : "/book/borrow",
+			    				"data":{bId:list[0].bId,userId:id},
 			    				"dataType" : "json",
 			    				"success" : function(resp) {
 			    					if (resp.code == 200) {
-			    						layer.msg("设置成功!")
+			    						layer.msg("借阅成功!")
 			    						layer.close(index);
 			    						tableObj.bootstrapTable('refresh');
 			    					} else {

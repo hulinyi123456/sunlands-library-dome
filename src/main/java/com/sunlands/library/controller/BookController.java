@@ -3,8 +3,10 @@ package com.sunlands.library.controller;
 import com.github.pagehelper.PageInfo;
 import com.sunlands.library.domain.BookInfo;
 import com.sunlands.library.domain.BookType;
+import com.sunlands.library.domain.BookUserDetail;
 import com.sunlands.library.service.BookService;
 import com.sunlands.library.service.BookTypeService;
+import com.sunlands.library.service.BookUserDetailService;
 import com.sunlands.library.util.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class BookController {
     private BookService bookService;
     @Autowired
     private BookTypeService bookTypeService;
+    @Autowired
+    private BookUserDetailService bookUserDetailService;
 
     /**
      *
@@ -81,5 +85,15 @@ public class BookController {
             this.bookService.save(book);
         }
         return "redirect:/book/listUI";
+    }
+
+    @RequestMapping("borrow")
+    @ResponseBody
+    public Result borrow(Integer userId,Integer bId){
+        BookUserDetail bookUserDetail = new BookUserDetail();
+        bookUserDetail.setBookId(bId);
+        bookUserDetail.setUserId(userId);
+        this.bookUserDetailService.saveDetail(bookUserDetail);
+        return Result.succeed();
     }
 }
