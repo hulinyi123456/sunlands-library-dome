@@ -18,8 +18,11 @@ $(function() {
                     if (value === 0) {
                         return '<span class="label label-primary">可借</span>';
                     }
+                    if (value === 1) {
+                        return '<span class="label label-success">借出</span>';
+                    }
                     if (value === 2) {
-                        return '<span class="label label-success">菜单</span>';
+                        return '<span class="label label-warning">延期</span>';
                     }
                     if (value === 3) {
                         return '<span class="label label-warning">超时</span>';
@@ -29,7 +32,7 @@ $(function() {
             {field: 'currentDetail',align: 'center', title: '借阅人',width:220,
                 formatter:function (value) {
             		if(value!=null){
-                        return value.userId;
+                        return value.borrower;
                     }else {
             			return "";
 					}
@@ -43,10 +46,10 @@ $(function() {
             			return"";
                 }
 			},
-            {field: 'currentDetail',align: 'center', title: '备注',width:220,
+            {field: 'currentDetail',align: 'center', title: '续期',width:220,
                 formatter:function (value) {
                     if (value!=null)
-                        return jsonDateFormat(value.borrowTime);
+                        return value.renewal;
                     else
                         return"";
                 }

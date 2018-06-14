@@ -2,7 +2,7 @@
 <html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>权限列表</title>
+    <title>图书列表</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css" />
     <link rel="stylesheet" href="../css/font-awesome.min.css" />
     <link rel="stylesheet" href="../js/layer/skin/default/layer.css" />
@@ -17,6 +17,9 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div style="position: absolute;top:15px" id="btns">
+                        <a shiro:hasPermission="book:borrow" href="#" class="btn btn-success  btn-sm" data-code="role:setPermission">
+                            <i class="icon-cog"></i>借阅图书
+                        </a>
 
                             <a shiro:hasPermission="book:add" href="#" class="btn btn-primary  btn-sm" data-code="book:add">
                                 <i class="icon-ok"></i>新增
@@ -39,6 +42,6 @@
 </div>
 <head th:include="commom2"/>
 <script src="../js/bootstrap-table/tree-column/bootstrap-table-tree-column.min.js"></script>
-<script src="../js/book/list.js?ver=0.1"></script>
+<script src="../js/book/list.js?ver=0.2"></script>
 </body>
 </html>

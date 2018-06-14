@@ -22,6 +22,9 @@ public class BookUserDetail implements Serializable {
 
     private String status;
 
+    //借阅人名字
+    private String borrower;
+
     public Integer getId() {
         return id;
     }
@@ -92,5 +95,13 @@ public class BookUserDetail implements Serializable {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getBorrower() {
+        return borrower;
+    }
+
+    public void setBorrower(String borrower) {
+        this.borrower = borrower;
     }
 }

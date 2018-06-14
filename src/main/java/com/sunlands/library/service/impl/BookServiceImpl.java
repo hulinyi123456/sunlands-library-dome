@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sunlands.library.domain.BookInfo;
+import com.sunlands.library.domain.BookUserDetail;
 import com.sunlands.library.mapper.BookInfoMapper;
 import com.sunlands.library.mapper.BookTypeMapper;
+import com.sunlands.library.mapper.UserMapper;
 import com.sunlands.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -29,6 +31,8 @@ public class BookServiceImpl implements BookService {
     private BookInfoMapper bookInfoMapper;
     @Autowired
     private BookTypeMapper bookTypeMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     @Cacheable
@@ -40,6 +44,18 @@ public class BookServiceImpl implements BookService {
             StringBuffer author=new StringBuffer();
             //添加类目名称
             bookInfo.setTypeName(this.bookTypeMapper.selectByPrimaryKey(bookInfo.getTypeId()).getName());
+            //获取借阅信息
+            BookUserDetail bookUserDetail =bookInfo.getCurrentDetail();
+            if (bookUserDetail!=null){
+                bookUserDetail.setBorrower(userMapper.selectByPrimaryKey(bookUserDetail.getUserId()).getUserName());
+                String renewal = bookUserDetail.getRenewal();
+                if(renewal!=null){
+                    JSONObject jRenewal = JSONObject.parseObject(renewal);
+                    renewal = (String) jRenewal.get("reTime");
+                    bookUserDetail.setRenewal(renewal);
+                }
+                bookInfo.setCurrentDetail(bookUserDetail);
+            }
             //解析json获得作者信息
             JSONObject jsonObject = JSONObject.parseObject(bookInfo.getAuthor());
             Set<Map.Entry<String,Object>> authorSet =  jsonObject.entrySet();
