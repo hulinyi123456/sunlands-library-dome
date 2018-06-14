@@ -29,7 +29,7 @@ public class RedisConfig {
         cacheManager.setDefaultExpiration(60);
         //可以为每一个缓存设置过期时间
         Map<String,Long> expiresMap=new HashMap<>(16);
-        expiresMap.put("book",100L);
+        expiresMap.put("book",10L);
         cacheManager.setExpires(expiresMap);
         return cacheManager;
     }

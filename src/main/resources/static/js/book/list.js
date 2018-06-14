@@ -12,7 +12,45 @@ $(function() {
             {field: 'name',align: 'center', title: '书名',width:150},
             {field: 'author',align: 'center', title: '作者',width:220},
             {field: 'press',align: 'center', title: '出版社',width:220},
-            {field: 'status',align: 'center', title: '状态',width:220}
+            {field: 'typeName',align: 'center', title: '类别',width:220},
+            {field: 'status',align: 'center', title: '借阅状态',width:220,
+                formatter:function (value) {
+                    if (value === 0) {
+                        return '<span class="label label-primary">可借</span>';
+                    }
+                    if (value === 2) {
+                        return '<span class="label label-success">菜单</span>';
+                    }
+                    if (value === 3) {
+                        return '<span class="label label-warning">超时</span>';
+                    }
+                }
+                },
+            {field: 'currentDetail',align: 'center', title: '借阅人',width:220,
+                formatter:function (value) {
+            		if(value!=null){
+                        return value.userId;
+                    }else {
+            			return "";
+					}
+                }
+			},
+            {field: 'currentDetail',align: 'center', title: '借出时间',width:220,
+                formatter:function (value) {
+            		if (value!=null)
+                    return jsonDateFormat(value.borrowTime);
+            		else
+            			return"";
+                }
+			},
+            {field: 'currentDetail',align: 'center', title: '备注',width:220,
+                formatter:function (value) {
+                    if (value!=null)
+                        return jsonDateFormat(value.borrowTime);
+                    else
+                        return"";
+                }
+            }
         ]
     });
 
@@ -200,3 +238,25 @@ $(function() {
 		}
 	});
 });
+
+function jsonDateFormat(jsonDate) {
+    //json日期格式转换为正常格式
+    var jsonDateStr = jsonDate.toString();//此处用到toString（）是为了让传入的值为字符串类型，目的是为了避免传入的数据类型不支持.replace（）方法
+    try {
+        var k = parseInt(jsonDateStr.replace("/Date(", "").replace(")/", ""), 10);
+        if (k < 0)
+            return null;
+
+        var date = new Date(parseInt(jsonDateStr.replace("/Date(", "").replace(")/", ""), 10));
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+        var milliseconds = date.getMilliseconds();
+        return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+    }
+    catch (ex) {
+        return "时间格式转换错误";
+    }
+}

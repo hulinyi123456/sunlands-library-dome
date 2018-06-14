@@ -1,8 +1,9 @@
 package com.sunlands.library.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BookUserDetail {
+public class BookUserDetail implements Serializable {
     private Integer id;
 
     private Integer bookId;

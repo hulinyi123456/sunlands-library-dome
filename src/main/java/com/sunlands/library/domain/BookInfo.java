@@ -17,6 +17,8 @@ public class BookInfo implements Serializable {
 
     private String typeName;
 
+    private BookUserDetail currentDetail;
+
     public Integer getbId() {
         return bId;
     }
@@ -71,5 +73,13 @@ public class BookInfo implements Serializable {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public BookUserDetail getCurrentDetail() {
+        return currentDetail;
+    }
+
+    public void setCurrentDetail(BookUserDetail currentDetail) {
+        this.currentDetail = currentDetail;
     }
 }
