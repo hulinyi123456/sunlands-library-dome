@@ -14,7 +14,7 @@ var commonUtil = {
 			showRefresh : true,
 			showColumns : true,
 			minimumCountColumns : 2,
-			clickToSelect : true,
+			clickToSelect : false,
 			detailView : obj.detailView,
 			detailFormatter : commonUtil.detailFormatter,
 			pagination : obj.pagination,
