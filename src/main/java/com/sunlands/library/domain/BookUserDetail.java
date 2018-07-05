@@ -20,7 +20,7 @@ public class BookUserDetail implements Serializable {
 
     private String renewal;
 
-    private String status;
+    private Byte status;
 
     //借阅人名字
     private String borrower;
@@ -89,12 +89,12 @@ public class BookUserDetail implements Serializable {
         this.renewal = renewal == null ? null : renewal.trim();
     }
 
-    public String getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public String getBorrower() {

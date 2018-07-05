@@ -65,6 +65,15 @@ public class BookController {
         return Result.succeed(pageInfo);
     }
 
+    /**
+     *
+     * 功能描述: 打开新建/编辑图书页面
+     *
+     * @param model 
+     * @param bId 图书ID
+     * @return java.lang.String
+     * @date 2018/7/4 16:55
+     */
     @RequestMapping("saveUI")
     public String saveUI(Model model,Integer bId){
         if (bId!=null){
@@ -76,6 +85,14 @@ public class BookController {
         return "book/saveUI";
     }
 
+    /**
+     *
+     * 功能描述: 保存新建图书信息，如果传入图书ID则保存编辑信息
+     *
+     * @param book 图书对象
+     * @return java.lang.String
+     * @date 2018/7/4 16:57
+     */
     @RequiresPermissions(value={"book:add"})
     @RequestMapping("save")
     public String save(BookInfo book){
@@ -87,6 +104,15 @@ public class BookController {
         return "redirect:/book/listUI";
     }
 
+    /**
+     *
+     * 功能描述: 图书借阅
+     *
+     * @param userId 借阅者ID
+     * @param bId 图书ID
+     * @return com.sunlands.library.util.Result
+     * @date 2018/7/4 17:00
+     */
     @RequestMapping("borrow")
     @ResponseBody
     public Result borrow(Integer userId,Integer bId){
@@ -96,4 +122,22 @@ public class BookController {
         this.bookUserDetailService.saveDetail(bookUserDetail);
         return Result.succeed();
     }
+
+    /**
+     *
+     * 功能描述: 归还/续期图书
+     *
+     * @param book 保存图书ID的对象
+     * @param detail 保存借阅详情的ID的对象
+     * @return com.sunlands.library.util.Result
+     * @date 2018/7/4 17:49
+     */
+    @RequestMapping("return")
+    @ResponseBody
+    public Result setBookStatus(BookInfo book,BookUserDetail detail,Integer operation){
+        //1是归还，2是延期
+        this.bookService.setBookStatus(book,detail,operation);
+        return Result.succeed();
+    }
+
 }

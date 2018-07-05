@@ -2,6 +2,7 @@ package com.sunlands.library.service;
 
 import com.github.pagehelper.PageInfo;
 import com.sunlands.library.domain.BookInfo;
+import com.sunlands.library.domain.BookUserDetail;
 
 /**
  * @author : hulin
@@ -53,4 +54,16 @@ public interface BookService {
      * @date 2018/6/14 17:21
      */
     BookInfo getBookById(Integer bId);
+
+    /**
+     *
+     * 功能描述: 修改图书借阅状态和借阅详情状态
+     *
+     * @param book 保存有图书ID的对象
+     * @param detail 保存了借阅详情ID的对象
+     * @param operation 操作命令，1是归还，2是延期
+     * @return void
+     * @date 2018/7/4 17:52
+     */
+    void setBookStatus(BookInfo book, BookUserDetail detail,Integer operation);
 }

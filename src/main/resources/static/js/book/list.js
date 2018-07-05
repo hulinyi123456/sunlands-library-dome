@@ -13,7 +13,7 @@ $(function() {
             {field: 'author',align: 'center', title: '作者',width:220},
             {field: 'press',align: 'center', title: '出版社',width:220},
             {field: 'typeName',align: 'center', title: '类别',width:220},
-            {field: 'status',align: 'center', title: '借阅状态',width:220,
+            {field: 'status',align: 'center', title: '借阅状态',width:100,
                 formatter:function (value) {
                     if (value === 0) {
                         return '<span class="label label-success">可借</span>';
@@ -22,7 +22,7 @@ $(function() {
                         return '<span class="label label-primary">借出</span>';
                     }
                     if (value === 2) {
-                        return '<span class="label label-warning">延期</span>';
+                        return '<span class="label label-warning">续期</span>';
                     }
                     if (value === 3) {
                         return '<span class="label label-danger">超时</span>';
@@ -46,12 +46,19 @@ $(function() {
             			return"";
                 }
 			},
-            {field: 'currentDetail',align: 'center', title: '续期',width:220,
+            {field: 'currentDetail',align: 'center', title: '续期时间',width:220,
                 formatter:function (value) {
-                    if (value!=null)
-                        return value.renewal;
-                    else
-                        return"";
+                    if (value!=null){
+                        if(value.status==1){
+                            return"<a shiro:hasPermission=\"book:borrow\" href=\"#\" class=\"btn btn-success  btn-sm\" data-code=\"book:borrow\" style='padding: 0px 5px'>" +
+                                "<i class=\"icon-cog\"></i>续期</a>";
+                        }
+                        if (value.status==2||value.status==4){
+                            return value.renewal;
+                        }
+                    }else{
+                        return "";
+                    }
                 }
             }
         ]
@@ -94,7 +101,7 @@ $(function() {
                     var html = [];
                     for(var i=0; i<userList.length; i++) {
                         var obj = userList[i];
-                        html.push("<option value="+obj.userId+" selected='selected'>"+obj.userName+"</option>");
+                        html.push("<option value="+obj.userId+">"+obj.userName+"</option>");
                     }
                     $('#userId').html(html.join(""));
 

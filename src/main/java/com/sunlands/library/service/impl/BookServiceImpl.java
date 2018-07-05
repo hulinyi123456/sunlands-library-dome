@@ -7,6 +7,7 @@ import com.sunlands.library.domain.BookInfo;
 import com.sunlands.library.domain.BookUserDetail;
 import com.sunlands.library.mapper.BookInfoMapper;
 import com.sunlands.library.mapper.BookTypeMapper;
+import com.sunlands.library.mapper.BookUserDetailMapper;
 import com.sunlands.library.mapper.UserMapper;
 import com.sunlands.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,10 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +38,18 @@ public class BookServiceImpl implements BookService {
     private BookTypeMapper bookTypeMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private BookUserDetailMapper bookUserDetailMapper;
+    /**
+     *操作指令：归还
+     */
+    private final static int OPERATION_RETURN = 1;
+    /**
+     *操作指令：延期
+     */
+    private final static int OPERATION_RENEWAL = 2;
+
+    private final static String DATA_PATTERN = "yy-MM-dd HH:mm:ss";
 
     @Override
     @Cacheable
@@ -41,6 +57,7 @@ public class BookServiceImpl implements BookService {
 
         PageHelper.startPage(currentNum, pageSize);
         List<BookInfo> bookInfos = bookInfoMapper.getAllBooks();
+        //识别返回值
         bookInfos.forEach(bookInfo -> setBook(bookInfo));
         return new PageInfo<>(bookInfos);
     }
@@ -62,6 +79,28 @@ public class BookServiceImpl implements BookService {
         BookInfo bookInfo = setBook(this.bookInfoMapper.selectByPrimaryKey(bId));
         bookInfo.setAuthor(bookInfo.getAuthor().substring(0,bookInfo.getAuthor().length()-2));
         return bookInfo;
+    }
+
+    @Override
+    @CacheEvict(value = "book",allEntries = true,beforeInvocation = true)
+    @Transactional(rollbackFor = Exception.class)
+    public void setBookStatus(BookInfo book,BookUserDetail detail,Integer operation) {
+        if (operation==OPERATION_RETURN){
+            book.setStatus((byte) 0);
+            detail.setStatus((byte) 0);
+            detail.setBackTime(new Date());
+        }
+        if (operation==OPERATION_RENEWAL){
+            book.setStatus((byte) 2);
+            detail.setStatus((byte) 2);
+            SimpleDateFormat sdf = new SimpleDateFormat(DATA_PATTERN);
+            String reTime = "{\"reTime\":\""+sdf.format(new Date())+"\"}";
+            detail.setRenewal(reTime);
+        }
+        //修改图书借阅状态
+        this.bookInfoMapper.updateByPrimaryKeySelective(book);
+        //修改图书借阅信息
+        this.bookUserDetailMapper.updateByPrimaryKeySelective(detail);
     }
 
     /**
@@ -102,6 +141,7 @@ public class BookServiceImpl implements BookService {
             if(renewal!=null){
                 JSONObject jRenewal = JSONObject.parseObject(renewal);
                 renewal = (String) jRenewal.get("reTime");
+                //去掉json格式，只保留时间字符串
                 bookUserDetail.setRenewal(renewal);
             }
             bookInfo.setCurrentDetail(bookUserDetail);

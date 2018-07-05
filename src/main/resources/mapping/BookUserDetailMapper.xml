@@ -10,7 +10,7 @@
     <result column="borrow_time" property="borrowTime" jdbcType="TIMESTAMP" />
     <result column="back_time" property="backTime" jdbcType="TIMESTAMP" />
     <result column="renewal" property="renewal" jdbcType="CHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, book_id, user_id, admin_id, admin2_id, borrow_time, back_time, renewal, status
