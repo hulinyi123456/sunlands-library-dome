@@ -176,7 +176,7 @@ $(function() {
     var borrow2 = function (row) {
         $.ajax({
             "type": "GET",
-            "url": "/user/getList/",
+            "url": "/user/getUserWithoutBook",
             "dataType": "json",
             "success": function (resp) {
                 if (resp.code == 200) {

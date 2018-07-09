@@ -78,4 +78,9 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUser() {
         return userMapper.getByPage();
     }
+
+    @Override
+    public List<User> getUserWithoutBook() {
+        return userMapper.getUserWithoutBook();
+    }
 }

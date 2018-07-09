@@ -26,4 +26,6 @@ public interface UserMapper {
     void deleteUserRoleByUserId(int userId);
 
     void saveUserRole(List<Map<String,Integer>> infoList);
+
+    List<User> getUserWithoutBook();
 }

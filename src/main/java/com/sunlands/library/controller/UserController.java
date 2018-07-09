@@ -75,9 +75,17 @@ public class UserController {
 		return "/user/listUI";
 	}
 
-	@RequestMapping("getList")
+	/**
+	 *
+	 * 功能描述: 获取没有借书的用户列表
+	 *
+	 * @param
+	 * @return com.sunlands.library.util.Result
+	 * @date 2018/7/9 15:53
+	 */
+	@RequestMapping("getUserWithoutBook")
 	@ResponseBody
-	public Result getList(){
-		return Result.succeed(this.userService.getAllUser());
+	public Result getUserWithoutBook(){
+		return Result.succeed(this.userService.getUserWithoutBook());
 	}
 }

@@ -20,6 +20,12 @@
     <include refid="Base_Column_List" />
     from sys_user
   </select>
+  <select id="getUserWithoutBook" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where user_id not in (select user_id from book_user_detail where status != 0)
+  </select>
 
   <select id="getUserByUserName" parameterType="String" resultMap="BaseResultMap">
 		SELECT

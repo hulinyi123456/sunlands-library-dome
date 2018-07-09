@@ -36,4 +36,14 @@ public interface UserService {
      * @date 2018/6/14 19:27
      */
     List<User> getAllUser();
+
+    /**
+     *
+     * 功能描述: 获取没有借书的用户
+     *
+     * @param
+     * @return java.util.List<com.sunlands.library.domain.User>
+     * @date 2018/7/9 15:55
+     */
+    List<User> getUserWithoutBook();
 }
