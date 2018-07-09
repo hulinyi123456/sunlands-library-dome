@@ -69,7 +69,7 @@ $(function() {
                         borrow2(row);
                     },
                     'click .renewal': function (e, value, row, index) {
-                        alert(index);
+                        renewal(row);
                     },
                     'click .return': function (e, value, row, index) {
                         returnBook(row);
@@ -227,13 +227,44 @@ $(function() {
         });
 
     }
+
+    var renewal = function (row) {
+        layer.open({
+            title: "《" + row.name + '》续期',
+            type: 1,
+            content: $("#bookUI3"),
+            area: ['400px', '120px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                // 发送请求
+                $.ajax({
+                    "type": "POST",
+                    "url": "/book/return",
+                    "data": {bId: row.bId, id: row.currentDetail.id,operation:2},
+                    "dataType": "json",
+                    "success": function (resp) {
+                        if (resp.code == 200) {
+                            layer.msg("续期成功!")
+                            layer.close(index);
+                            tableObj.bootstrapTable('refresh');
+                        } else {
+                            layer.alert(resp.msg, {
+                                "icon": 2
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     var returnBook = function (row) {
 
         layer.open({
             title: "《" + row.name + '》归还',
             type: 1,
-            content: $("#bookUI"),
-            area: ['400px', '200px'],
+            content: $("#bookUI2"),
+            area: ['400px', '120px'],
             btn: ['确定', '取消'],
             yes: function (index, layero) {
                 // 发送请求

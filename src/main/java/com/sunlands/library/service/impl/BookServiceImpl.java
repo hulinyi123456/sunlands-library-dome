@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
      */
     private final static int OPERATION_RENEWAL = 2;
 
-    private final static String DATA_PATTERN = "yy-MM-dd HH:mm:ss";
+    private final static String DATA_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     @Override
     @Cacheable
